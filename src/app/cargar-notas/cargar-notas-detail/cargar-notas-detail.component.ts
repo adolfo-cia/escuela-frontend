@@ -22,19 +22,7 @@ export class CargarNotasDetailComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      if (+params['id']) {
-        // console.log(+params['id']);
-        this.updateFlag = true;
-        this.service.getEvaluacion(+params['id']).subscribe(
-          data => {
-            this.evaluacion = data; 
-          });
-
-      } else {
-        
-      }
-    });
+    
   }
 
   createForm() {

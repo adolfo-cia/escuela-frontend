@@ -6,6 +6,7 @@ import { CargarNotasService } from './cargar-notas-service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserSession } from '../security/auth-model';
+import { Nota } from '../inscripcion/inscripcion-model';
 
 @Component({
   selector: 'app-cargar-notas',
@@ -57,11 +58,12 @@ export class CargarNotasComponent implements OnInit {
   // }
 
   onView(row: any): void {
-    this.service.getEvaluacion(row.id).subscribe(
-      data => {
+    this.service.getNotasByEvaluacion(row.id).subscribe(
+      result => {
+        console.log(result);
         const dialogRef = this.dialog.open(DialogPruebaDialog, {
           width: '75%',
-          //data: {nombreAlumno: row.alumno.persona.nombre, apellidoAlumno: row.alumno.persona.apellido, notas: data }
+          data: {notas: result}
         });
     
         dialogRef.afterClosed().subscribe(result => {
@@ -93,8 +95,7 @@ export class DialogPruebaDialog {
 }
 
 export interface DialogData {
-  nombreAlumno: string;
-  apellidoAlumno: string;
+  notas: Nota[];
 }
 
 

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Materia } from '../materia/materia-models';
 import { Evaluacion } from '../evaluacion/evaluacion-model';
+import { Nota } from '../inscripcion/inscripcion-model';
 
 @Injectable()
 export class CargarNotasService {
@@ -11,28 +12,16 @@ export class CargarNotasService {
 
   constructor(private http: HttpClient) { }
 
-  getEvaluacion(id: Number) {
-    return this.http.get<Evaluacion>(this.endpoint + "/evaluaciones/" + id);
+  getNotasByEvaluacion(idEvaluacion: Number) {
+    return this.http.get<Nota[]>(this.endpoint + "/notas/getNotasByEvaluacion/"+idEvaluacion);
   }
-
-//   deleteEvaluacion(id: Number) {
-//     return this.http.delete(this.endpoint + "/evaluaciones/" + id);
-//   }
-
-//   saveEvaluacion(evaluacion: Evaluacion) {
-//     return this.http.post<Evaluacion>(this.endpoint + "/evaluaciones", evaluacion);
-//   }
-
-//   updateEvaluacion(evaluacion: Evaluacion) {
-//     return this.http.put<Evaluacion>(this.endpoint + "/evaluaciones/" + evaluacion.id, evaluacion);
-//   }
 
   getMaterias(username: String) {
     return this.http.get<Materia[]>(this.endpoint + "/materias/"+username);
   }
 
   getEvaluaciones(idMateria: number) {
-    return this.http.get<Evaluacion[]>(this.endpoint + "/evaluaciones/"+idMateria);
+    return this.http.get<Evaluacion[]>(this.endpoint + "/evaluaciones/evaluacionesMaterias/"+idMateria);
   }
 
 }
