@@ -24,4 +24,8 @@ export class CargarNotasService {
     return this.http.get<Evaluacion[]>(this.endpoint + "/evaluaciones/evaluacionesMaterias/"+idMateria);
   }
 
+  updateNota(nota: Nota) {
+    return this.http.put<Nota>(this.endpoint + "/notas/"+nota.id, nota);
+  }
+
 }

@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserSession } from '../security/auth-model';
 import { Nota } from '../inscripcion/inscripcion-model';
+import { RestError } from '../shared/components/global-error-handler/rest-error';
 
 @Component({
   selector: 'app-cargar-notas',
@@ -17,12 +18,10 @@ export class CargarNotasComponent implements OnInit {
 
   evaluacionCombo: Evaluacion[];
   materiaCombo: Materia[];
-  panelOpenState = false;
+  panelOpenState: boolean = false;
   user: UserSession = new UserSession();
 
   constructor(private service: CargarNotasService,  private router: Router, public dialog: MatDialog) { }
-
-  // TAL VEZ TENGA QUE PROGRAMAR UNA FUNCION EN PARTICULAR PARA CARGAR LAS EVALUACIONES DE CADA MATERIA QUE SELECCIONE
 
   ngOnInit() {
     let token = localStorage.getItem('token');
@@ -45,17 +44,6 @@ export class CargarNotasComponent implements OnInit {
   goMenu() {
     this.router.navigate(['/menu/menu-cursado']);
   }
-
-  // delete(evaluacion: Evaluacion) {
-  //   this.service.deleteEvaluacion(evaluacion.id).subscribe(
-  //     data => {
-  //       console.log('exito');
-  //       this.ngOnInit();
-  //     }, err => {
-  //       console.log('error');
-  //     }
-  //   );
-  // }
 
   onView(row: any): void {
     this.service.getNotasByEvaluacion(row.id).subscribe(
@@ -80,16 +68,53 @@ export class CargarNotasComponent implements OnInit {
 
 @Component({
   selector: 'dialog-overview-example-dialog',
-  templateUrl: 'prueba.html',
+  templateUrl: 'nota-edit.html',
 })
 export class DialogPruebaDialog {
-  
+
+  banderaEditar: boolean = false;
+  backendError: boolean = false;
+  backendErrorMessage: string;
+
   constructor(
+    private service: CargarNotasService,
     public dialogRef: MatDialogRef<DialogPruebaDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  editar() {
+    this.banderaEditar = true;
+  }
+
+  guardar(nota: Nota) {
+    this.service.updateNota(nota).subscribe(
+      data => {
+        console.log('ok');
+        this.banderaEditar = false;
+      }, err => {
+        var errorObj: RestError;
+        try {
+          errorObj = JSON.parse(err.error) as RestError;
+        } catch (e) {
+          errorObj = err.error as RestError;
+        }
+
+        this.backendError = true;
+        if (errorObj !== null) {
+          this.backendErrorMessage = errorObj.errors[0];
+        } else {
+          this.backendErrorMessage = 'Se produjo un error inesperado. Consulte al administrador.';
+        }
+      }
+    );
+    this.backendError = false;
+  }
+
+  cancelar() {
+    this.banderaEditar = false;
   }
 
 }
