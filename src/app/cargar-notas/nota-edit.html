@@ -25,28 +25,28 @@
                 <td>{{ nota.evaluacion.materia.descripcion }}</td>
                 <td>{{ nota.alumnoCurso.alumno.persona.apellido }} {{ nota.alumnoCurso.alumno.persona.nombre }}</td>
                 <td>
-                  <ng-container *ngIf="!banderaEditar">
-                    {{ nota.calificacion }}
-                  </ng-container>
-                  <ng-container *ngIf="banderaEditar">
+                  <ng-container *ngIf="banderaEditar && isSelected(nota.id); else sinEditar">
                     <div class="form-group">
                       <div class="form-line">
-                        <input type="text" class="form-control" [(ngModel)]="nota.calificacion" placeholder="Descripción" />
+                        <input type="text" class="form-control" [(ngModel)]="nota.calificacion" placeholder="Calificación" />
                       </div>
                     </div>
                   </ng-container>
+                  <ng-template #sinEditar>
+                    {{ nota.calificacion }}
+                  </ng-template>
                 </td>
                 <td>
                   <ng-container *ngIf="!banderaEditar">
-                    <button type="button" class="btn btn-default btn-circle waves-effect waves-circle waves-float" (click)="editar()" title="Editar nota">
+                    <button type="button" class="btn btn-default btn-circle waves-effect waves-circle waves-float" (click)="editar(nota.id)" title="Editar nota">
                       <i class="material-icons">edit</i>
                     </button>
                   </ng-container>
-                  <ng-container *ngIf="banderaEditar">
+                  <ng-container *ngIf="banderaEditar && isSelected(nota.id)">
                     <button type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" (click)="guardar(nota)" title="Guardar nota">
                       <i class="material-icons">done</i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-circle waves-effect waves-circle waves-float" (click)="cancelar()" title="Cancelar">
+                    <button type="button" class="btn btn-danger btn-circle waves-effect waves-circle waves-float" (click)="cancelar(nota.id)" title="Cancelar">
                       <i class="material-icons">clear</i>
                     </button>
                   </ng-container>

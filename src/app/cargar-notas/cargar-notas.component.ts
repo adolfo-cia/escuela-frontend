@@ -75,6 +75,7 @@ export class DialogPruebaDialog {
   banderaEditar: boolean = false;
   backendError: boolean = false;
   backendErrorMessage: string;
+  notaSelected: number;
 
   constructor(
     private service: CargarNotasService,
@@ -85,8 +86,9 @@ export class DialogPruebaDialog {
     this.dialogRef.close();
   }
 
-  editar() {
+  editar(idNota: number) {
     this.banderaEditar = true;
+    this.notaSelected = idNota;
   }
 
   guardar(nota: Nota) {
@@ -94,6 +96,7 @@ export class DialogPruebaDialog {
       data => {
         console.log('ok');
         this.banderaEditar = false;
+        this.notaSelected = undefined;
       }, err => {
         var errorObj: RestError;
         try {
@@ -113,8 +116,17 @@ export class DialogPruebaDialog {
     this.backendError = false;
   }
 
-  cancelar() {
+  cancelar(idNota: number) {
     this.banderaEditar = false;
+    this.notaSelected = undefined;
+  }
+
+  isSelected(idNota: number) {
+    if (this.notaSelected === idNota) {
+      return true;
+    } else {
+      return false;
+    } 
   }
 
 }

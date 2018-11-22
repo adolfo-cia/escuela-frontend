@@ -12,6 +12,7 @@
                 <th>#</th>
                 <th>DESCRIPCIÓN</th>
                 <th>MATERIA</th>
+                <th>NIVEL</th>
                 <th>ACCIONES</th>
               </tr>
             </thead>
@@ -20,6 +21,7 @@
                 <td>{{evaluacion.id}}</td>
                 <td>{{evaluacion.descripcion}}</td>
                 <td>{{evaluacion.materia.descripcion}}</td>
+                <td>{{evaluacion.materia.nivel.descripcion}}</td>
                 <td>
                   <button type="button" class="btn btn-default btn-circle waves-effect waves-circle waves-float" (click)="goEdit(evaluacion)">
                     <i class="material-icons">search</i>
